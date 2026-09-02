@@ -1,0 +1,113 @@
+/* ==========================================
+   Authentication Styles
+   ========================================== */
+
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    padding: var(--spacing-lg);
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--white);
+    border-radius: var(--border-radius-xl);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    padding: var(--spacing-xl);
+    text-align: center;
+    color: var(--white);
+}
+
+.auth-header .logo {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto var(--spacing-lg);
+    background-color: var(--white);
+    border-radius: var(--border-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+}
+
+.auth-header .logo i {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+}
+
+.auth-header h2 {
+    color: var(--white);
+    margin-bottom: var(--spacing-xs);
+    font-weight: 600;
+}
+
+.auth-header p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0;
+    font-size: var(--font-size-sm);
+}
+
+.auth-body {
+    padding: var(--spacing-xl);
+}
+
+.auth-footer {
+    padding: var(--spacing-lg);
+    text-align: center;
+    background-color: var(--light-gray);
+    border-top: 1px solid var(--medium-gray);
+}
+
+.auth-footer p {
+    margin-bottom: 0;
+    font-size: var(--font-size-sm);
+}
+
+/* Login Form Specific */
+.login-form .form-group {
+    position: relative;
+}
+
+.login-form .form-group i {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-light);
+    z-index: 1;
+}
+
+.login-form .form-control {
+    padding-left: 45px;
+}
+
+.login-form .btn-primary {
+    width: 100%;
+    padding: var(--spacing-md);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .auth-card {
+        max-width: 100%;
+    }
+    
+    .auth-header {
+        padding: var(--spacing-lg);
+    }
+    
+    .auth-body {
+        padding: var(--spacing-lg);
+    }
+}

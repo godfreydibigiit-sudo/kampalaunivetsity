@@ -1,0 +1,108 @@
+<footer class="footer">
+    <div class="footer-content">
+        <div class="row">
+            <div class="col-md-4">
+                <h5>About KIU</h5>
+                <p>Kampala International University is committed to providing quality education and fostering academic excellence.</p>
+            </div>
+            <div class="col-md-4">
+                <h5>Quick Links</h5>
+                <ul class="footer-links">
+                    <li><a href="{% url 'students:dashboard' %}">Dashboard</a></li>
+                    <li><a href="{% url 'results:view_results' %}">Results</a></li>
+                    <li><a href="{% url 'students:profile' %}">Profile</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5>Contact</h5>
+                <ul class="footer-contact">
+                    <li><i class="fas fa-map-marker-alt"></i> Kampala, Uganda</li>
+                    <li><i class="fas fa-envelope"></i> info@kiu.ac.ug</li>
+                    <li><i class="fas fa-phone"></i> +256 700 000 000</li>
+                </ul>
+            </div>
+        </div>
+        <hr>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Kampala International University. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+.footer {
+    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+    color: white;
+    padding: 40px 0 20px;
+    margin-left: 280px;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+}
+
+.footer h5 {
+    color: white;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.footer p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+}
+
+.footer-links,
+.footer-contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li,
+.footer-contact li {
+    margin-bottom: 10px;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-links a:hover {
+    color: white;
+}
+
+.footer-contact i {
+    margin-right: 10px;
+    width: 20px;
+    text-align: center;
+}
+
+.footer hr {
+    border-color: rgba(255, 255, 255, 0.2);
+    margin: 30px 0 20px;
+}
+
+.footer-bottom {
+    text-align: center;
+}
+
+.footer-bottom p {
+    margin: 0;
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        margin-left: 0;
+    }
+    
+    .footer .col-md-4 {
+        margin-bottom: 30px;
+    }
+}
+</style>

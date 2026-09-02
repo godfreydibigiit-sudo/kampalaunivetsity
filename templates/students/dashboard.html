@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Dashboard - KIU Results{% endblock %}
+
+{% block content %}
+<div style="display: flex; min-height: 100vh;">
+    <!-- Sidebar -->
+    <nav style="width: 280px; background: linear-gradient(180deg, #27AE60 0%, #2BAB61 100%); color: white; position: fixed; height: 100vh; left: 0; top: 0;">
+        <div style="padding: 30px 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);">
+            <div style="width: 70px; height: 70px; background: white; border-radius: 50%; margin: 0 auto 15px; display: flex; align-items: center; justify-content: center;">
+                <i class="fas fa-graduation-cap" style="font-size: 35px; color: #27AE60;"></i>
+            </div>
+            <h5 style="color: white;">KIU Results</h5>
+            <p style="color: rgba(255,255,255,0.8); margin: 0;">Student Portal</p>
+        </div>
+        
+        <div style="padding: 20px;">
+            <a href="{% url 'students:dashboard' %}" style="display: flex; align-items: center; padding: 12px 20px; color: white; text-decoration: none; background: rgba(255,255,255,0.2); border-radius: 12px; margin-bottom: 10px;">
+                <i class="fas fa-home me-3"></i> Dashboard
+            </a>
+            <a href="{% url 'results:view_results' %}" style="display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 12px; margin-bottom: 10px;">
+                <i class="fas fa-file-alt me-3"></i> My Results
+            </a>
+            <a href="{% url 'students:profile' %}" style="display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); text-decoration: none; border-radius: 12px; margin-bottom: 10px;">
+                <i class="fas fa-user me-3"></i> Profile
+            </a>
+            <form method="post" action="{% url 'accounts:logout' %}">
+                {% csrf_token %}
+                <button type="submit" style="display: flex; align-items: center; padding: 12px 20px; color: rgba(255,255,255,0.8); background: none; border: none; width: 100%; cursor: pointer; border-radius: 12px;">
+                    <i class="fas fa-sign-out-alt me-3"></i> Logout
+                </button>
+            </form>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div style="flex: 1; margin-left: 280px; padding: 30px;">
+        <!-- Header -->
+        <div class="card mb-4" style="border: none; border-radius: 15px;">
+            <div class="card-body">
+                <h2>Welcome, {{ user.get_full_name }}</h2>
+                <p class="text-muted mb-0">
+                    {{ user.registration_number }} | {{ student.get_department_name }}
+                </p>
+            </div>
+        </div>
+        
+        <!-- GPA Summary Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card" style="border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div class="card-body text-center">
+                        <h5 class="text-muted mb-2">Current CGPA</h5>
+                        <h2 class="text-success" style="font-size: 2.5rem;">{{ cgpa|floatformat:2 }}</h2>
+                        <p class="text-muted mb-0">{{ classification }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card" style="border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div class="card-body text-center">
+                        <h5 class="text-muted mb-2">Total Modules</h5>
+                        <h2>{{ total_modules }}</h2>
+                        <p class="text-muted mb-0">Modules Completed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card" style="border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                    <div class="card-body text-center">
+                        <h5 class="text-muted mb-2">Semesters</h5>
+                        <h2>{{ total_semesters }}</h2>
+                        <p class="text-muted mb-0">Semesters Completed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Module Results by Semester -->
+        {% for semester_data in semester_data %}
+        <div class="card mb-4" style="border: none; border-radius: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">{{ semester_data.semester.name }}</h4>
+                    <span class="badge bg-success" style="font-size: 1rem;">
+                        GPA: {{ semester_data.gpa|floatformat:2 }}
+                    </span>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Module Code</th>
+                                <th>Module Title</th>
+                                <th>Credit Units</th>
+                                <th>Coursework (30%)</th>
+                                <th>Exam (70%)</th>
+                                <th>Total Score</th>
+                                <th>Grade</th>
+                                <th>Grade Point</th>
+                                <th>Remark</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for module in semester_data.module_results %}
+                            <tr>
+                                <td>{{ module.course_code }}</td>
+                                <td>{{ module.course_title }}</td>
+                                <td>{{ module.credit_units }}</td>
+                                <td>{{ module.coursework_score|floatformat:1 }}</td>
+                                <td>{{ module.final_exam_score|floatformat:1 }}</td>
+                                <td>{{ module.total_score|floatformat:1 }}</td>
+                                <td>
+                                    <span class="badge {% if module.grade == 'A' or module.grade == 'B+' or module.grade == 'B' %}bg-success{% elif module.grade == 'C+' or module.grade == 'C' %}bg-warning{% elif module.grade == 'D+' or module.grade == 'D' or module.grade == 'E' %}bg-info{% else %}bg-danger{% endif %}">
+                                        {{ module.grade }}
+                                    </span>
+                                </td>
+                                <td>{{ module.grade_point }}</td>
+                                <td>{{ module.remark }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" class="text-center">No module results available</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="card" style="border: none; border-radius: 15px;">
+            <div class="card-body text-center py-5">
+                <i class="fas fa-file-alt" style="font-size: 60px; color: #ccc;"></i>
+                <h4 class="mt-3">No Results Published Yet</h4>
+                <p class="text-muted">Your results will appear here once published by admin.</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

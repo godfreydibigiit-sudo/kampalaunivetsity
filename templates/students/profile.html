@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile - KIU Results{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="main-content">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="header-title">
+                    <h1>My Profile</h1>
+                    <p>Manage your personal information</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Content -->
+        <div class="content-grid">
+            <div class="content-card">
+                <div class="content-card-body">
+                    <div class="profile-header">
+                        <div class="profile-avatar">
+                            {% if user.profile_picture %}
+                                <img src="{{ user.profile_picture.url }}" alt="Profile" class="rounded-circle" style="width: 100%; height: 100%; object-fit: cover;">
+                            {% else %}
+                                {{ user.get_full_name|first|upper }}
+                            {% endif %}
+                        </div>
+                        <h3 class="profile-name">{{ user.get_full_name }}</h3>
+                        <p class="profile-info">{{ user.registration_number }}</p>
+                        <p class="profile-info">{{ student.get_department_name }}</p>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="full_name" class="form-label">Full Name</label>
+                                {{ form.full_name }}
+                                {% if form.full_name.errors %}
+                                <div class="text-danger mt-1">{{ form.full_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <div class="text-danger mt-1">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone_number" class="form-label">Phone Number</label>
+                                {{ form.phone_number }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="profile_picture" class="form-label">Profile Picture</label>
+                                {{ form.profile_picture }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="department" class="form-label">Department</label>
+                                {{ form.department }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="year_of_study" class="form-label">Year of Study</label>
+                                {{ form.year_of_study }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="guardian_name" class="form-label">Guardian Name</label>
+                                {{ form.guardian_name }}
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label for="guardian_phone" class="form-label">Guardian Phone</label>
+                                {{ form.guardian_phone }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="address" class="form-label">Address</label>
+                            {{ form.address }}
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.form-control {
+    border-radius: 10px;
+    border: 1px solid #E9ECEF;
+    padding: 12px;
+}
+
+.form-control:focus {
+    border-color: #27AE60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #2C3E50;
+    margin-bottom: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

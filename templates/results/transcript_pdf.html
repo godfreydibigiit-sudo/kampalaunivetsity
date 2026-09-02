@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Results - KIU</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+        }
+        
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #27AE60;
+            padding-bottom: 20px;
+        }
+        
+        .university-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #27AE60;
+            margin-bottom: 5px;
+        }
+        
+        .university-address {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        
+        .document-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .student-info {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #F8F9FA;
+            border-radius: 5px;
+        }
+        
+        .student-info table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .student-info td {
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        
+        .student-info td:first-child {
+            font-weight: bold;
+            width: 200px;
+        }
+        
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .results-table th {
+            background-color: #27AE60;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .results-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+            font-size: 13px;
+        }
+        
+        .results-table tr:nth-child(even) {
+            background-color: #F8F9FA;
+        }
+        
+        .gpa-summary {
+            text-align: center;
+            padding: 20px;
+            background-color: #E6F5EF;
+            border-radius: 5px;
+            margin-bottom: 30px;
+        }
+        
+        .gpa-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #27AE60;
+        }
+        
+        .gpa-label {
+            font-size: 16px;
+            color: #333;
+            margin-top: 5px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .signature-section {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .signature {
+            text-align: center;
+            font-size: 12px;
+        }
+        
+        .signature-line {
+            width: 200px;
+            border-top: 1px solid #333;
+            margin: 40px auto 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="university-name">KAMPALA INTERNATIONAL UNIVERSITY</div>
+        <div class="university-address">Kampala, Uganda</div>
+        <div class="document-title">Academic Results</div>
+    </div>
+    
+    <div class="student-info">
+        <table>
+            <tr>
+                <td>Student Name:</td>
+                <td>{{ student.get_full_name }}</td>
+                <td>Registration Number:</td>
+                <td>{{ student.user.registration_number }}</td>
+            </tr>
+            <tr>
+                <td>Department:</td>
+                <td>{{ student.department.name }}</td>
+                <td>Year of Study:</td>
+                <td>{{ student.get_year_of_study_display }}</td>
+            </tr>
+            <tr>
+                <td>Semester:</td>
+                <td>{{ results_data.semester.name }}</td>
+                <td>Academic Year:</td>
+                <td>{{ results_data.semester.academic_year }}</td>
+            </tr>
+        </table>
+    </div>
+    
+    <div class="gpa-summary">
+        <div class="gpa-value">{{ results_data.gpa|floatformat:2 }}</div>
+        <div class="gpa-label">Semester GPA</div>
+    </div>
+    
+    <table class="results-table">
+        <thead>
+            <tr>
+                <th>Course Code</th>
+                <th>Course Title</th>
+                <th>Credit Units</th>
+                <th>Coursework</th>
+                <th>Exam</th>
+                <th>Total</th>
+                <th>Grade</th>
+                <th>Points</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results_data.results %}
+            <tr>
+                <td>{{ result.course.code }}</td>
+                <td>{{ result.course.title }}</td>
+                <td>{{ result.course.credit_units }}</td>
+                <td>{{ result.coursework_score }}</td>
+                <td>{{ result.final_exam_score }}</td>
+                <td>{{ result.total_score }}</td>
+                <td>{{ result.grade }}</td>
+                <td>{{ result.grade_point }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <div class="signature-section">
+        <div class="signature">
+            <div class="signature-line"></div>
+            Registrar's Signature
+        </div>
+        <div class="signature">
+            <div class="signature-line"></div>
+            Dean's Signature
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p>This is an official document from Kampala International University.</p>
+        <p>Verify authenticity at: www.kiu.ac.ug/verify</p>
+    </div>
+</body>
+</html>

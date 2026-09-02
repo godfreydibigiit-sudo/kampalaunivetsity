@@ -1,0 +1,75 @@
+{% load static %}
+<!-- Sidebar Overlay for Mobile -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- Sidebar -->
+<nav class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-logo">
+            <i class="fas fa-graduation-cap"></i>
+        </div>
+        <h4 class="sidebar-title">KIU Results</h4>
+        <p class="sidebar-subtitle">Student Portal</p>
+    </div>
+    
+    <div class="sidebar-nav">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a href="{% url 'students:dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'results:view_results' %}" class="nav-link {% if 'results' in request.path %}active{% endif %}">
+                    <i class="fas fa-file-alt"></i>
+                    <span>My Results</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'students:profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+        <form method="post" action="{% url 'accounts:logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="nav-link" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </form>
+    </div>
+</nav>
+
+<style>
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+}
+</style>

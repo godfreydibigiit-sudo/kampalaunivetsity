@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Login - KIU Result Management System{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h2>Kampala International University</h2>
+            <p>Student Result Management System</p>
+        </div>
+        
+        <div class="auth-body">
+            <h4 class="text-center mb-4">Student Login</h4>
+            
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Invalid registration number or password. Please try again.
+            </div>
+            {% endif %}
+            
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                
+                <div class="form-group mb-4">
+                    <label for="{{ form.username.id_for_label }}" class="form-label">
+                        <i class="fas fa-id-card me-2"></i>Registration Number
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                        {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                    <div class="text-danger mt-1">
+                        {{ form.username.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label for="{{ form.password.id_for_label }}" class="form-label">
+                        <i class="fas fa-lock me-2"></i>Password
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                        {{ form.password }}
+                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    {% if form.password.errors %}
+                    <div class="text-danger mt-1">
+                        {{ form.password.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="fas fa-sign-in-alt me-2"></i>Login
+                    </button>
+                </div>
+            </form>
+            
+            <div class="text-center mt-4">
+                <p class="text-muted">
+                    <i class="fas fa-info-circle me-1"></i>
+                    Forgot password? Contact the administrator
+                </p>
+            </div>
+        </div>
+        
+        <div class="auth-footer">
+            <p>© 2024 Kampala International University</p>
+        </div>
+    </div>
+</div>
+
+<style>
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+    padding: 20px;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 450px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.auth-header {
+    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+    color: white;
+    padding: 40px 30px;
+    text-align: center;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    background: white;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo i {
+    font-size: 40px;
+    color: #27AE60;
+}
+
+.auth-header h2 {
+    color: white;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.auth-header p {
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.auth-body {
+    padding: 40px 30px;
+}
+
+.form-control {
+    height: 50px;
+    border-radius: 12px;
+    border: 1px solid #E9ECEF;
+}
+
+.form-control:focus {
+    border-color: #27AE60;
+    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+}
+
+.input-group-text {
+    background: white;
+    border: 1px solid #E9ECEF;
+    border-right: none;
+    color: #6C757D;
+}
+
+.input-group .form-control {
+    border-left: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+    border: none;
+    height: 50px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
+}
+
+.auth-footer {
+    background: #F8F9FA;
+    padding: 20px;
+    text-align: center;
+}
+
+.auth-footer p {
+    margin: 0;
+    color: #6C757D;
+}
+</style>
+
+{% block extra_js %}
+<script>
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
+    const icon = this.querySelector('i');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+});
+</script>
+{% endblock %}
+{% endblock %}
