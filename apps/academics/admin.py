@@ -8,7 +8,7 @@ from .models import Department, Semester, Course
 
 @admin.register(Department)
 class DepartmentAdmin(admin.ModelAdmin):
-    """Admin interface for Department model."""
+    """Admin interface for Department model"""
     
     list_display = ['name', 'code', 'get_student_count', 'get_course_count', 'created_at']
     list_filter = ['created_at']
@@ -25,19 +25,19 @@ class DepartmentAdmin(admin.ModelAdmin):
     )
     
     def get_student_count(self, obj):
-        """Display student count in list."""
+        """Display student count in list"""
         return obj.get_student_count()
     get_student_count.short_description = 'Students'
     
     def get_course_count(self, obj):
-        """Display course count in list."""
+        """Display course count in list"""
         return obj.get_course_count()
     get_course_count.short_description = 'Courses'
 
 
 @admin.register(Semester)
 class SemesterAdmin(admin.ModelAdmin):
-    """Admin interface for Semester model."""
+    """Admin interface for Semester model"""
     
     list_display = [
         'name', 
@@ -45,7 +45,7 @@ class SemesterAdmin(admin.ModelAdmin):
         'semester_number',
         'is_active',
         'is_result_published',
-        'get_result_count'
+        'get_result_count'  # This will now work
     ]
     list_filter = ['academic_year', 'semester_number', 'is_active', 'is_result_published']
     search_fields = ['name', 'academic_year']
@@ -66,18 +66,18 @@ class SemesterAdmin(admin.ModelAdmin):
     actions = ['publish_results', 'unpublish_results']
     
     def get_result_count(self, obj):
-        """Display result count in list."""
+        """Display result count in list"""
         return obj.get_result_count()
     get_result_count.short_description = 'Results'
     
     def publish_results(self, request, queryset):
-        """Publish results for selected semesters."""
+        """Publish results for selected semesters"""
         updated = queryset.update(is_result_published=True)
         self.message_user(request, f'{updated} semester(s) results published.')
     publish_results.short_description = "Publish results for selected semesters"
     
     def unpublish_results(self, request, queryset):
-        """Unpublish results for selected semesters."""
+        """Unpublish results for selected semesters"""
         updated = queryset.update(is_result_published=False)
         self.message_user(request, f'{updated} semester(s) results unpublished.')
     unpublish_results.short_description = "Unpublish results for selected semesters"
@@ -85,7 +85,7 @@ class SemesterAdmin(admin.ModelAdmin):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    """Admin interface for Course model."""
+    """Admin interface for Course model"""
     
     list_display = [
         'code',

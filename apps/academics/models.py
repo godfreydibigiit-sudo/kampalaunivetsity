@@ -21,6 +21,14 @@ class Department(models.Model):
     
     def __str__(self):
         return f"{self.name} ({self.code})"
+    
+    def get_student_count(self):
+        """Return number of students in this department"""
+        return self.students.count()
+    
+    def get_course_count(self):
+        """Return number of courses in this department"""
+        return self.courses.count()
 
 
 class Semester(models.Model):
@@ -36,7 +44,7 @@ class Semester(models.Model):
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-    is_result_published = models.BooleanField(default=False)
+    is_result_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:
@@ -54,6 +62,16 @@ class Semester(models.Model):
         if not self.name:
             self.name = f"{self.get_semester_number_display()} {self.academic_year}"
         super().save(*args, **kwargs)
+    
+    # ADD THIS METHOD
+    def get_result_count(self):
+        """Return number of results for this semester"""
+        return self.results.count()
+    
+    # ADD THIS METHOD TOO
+    def get_course_count(self):
+        """Return number of courses in this semester"""
+        return self.courses.count()
 
 
 class Course(models.Model):
@@ -83,3 +101,8 @@ class Course(models.Model):
     
     def __str__(self):
         return f"{self.code} - {self.title}"
+    
+    # ADD THIS METHOD
+    def get_result_count(self):
+        """Return number of results for this course"""
+        return self.results.count()

@@ -4,208 +4,451 @@
 {% block title %}Login - KIU Result Management System{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/auth.css' %}">
+<style>
+    :root {
+        --primary: #27AE60;
+        --primary-dark: #2BAB61;
+        --primary-light: #E6F5EF;
+        --text-dark: #2C3E50;
+        --text-light: #7F8C8D;
+        --white: #FFFFFF;
+        --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 420px;
+        background: var(--white);
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        animation: slideUp 0.5s ease-out;
+    }
+
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .login-header {
+        background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+        padding: 30px 20px;
+        text-align: center;
+        color: var(--white);
+    }
+
+    .login-logo {
+        width: 90px;
+        height: 90px;
+        margin: 0 auto 15px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid var(--white);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .login-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .login-header h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .login-header p {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin: 0;
+    }
+
+    .login-body {
+        padding: 30px 20px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+    }
+
+    .input-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: #F8F9FA;
+        border: 2px solid #E9ECEF;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+    }
+
+    .input-wrapper:focus-within {
+        border-color: var(--primary);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+    }
+
+    .input-icon {
+        padding: 12px;
+        color: #95A5A6;
+        font-size: 1rem;
+        transition: color 0.3s;
+    }
+
+    .input-wrapper:focus-within .input-icon {
+        color: var(--primary);
+    }
+
+    .form-control {
+        flex: 1;
+        padding: 12px 12px 12px 0;
+        border: none;
+        background: transparent;
+        font-size: 0.95rem;
+        outline: none;
+        color: var(--text-dark);
+    }
+
+    .form-control::placeholder {
+        color: #BDC3C7;
+    }
+
+    .toggle-password {
+        background: none;
+        border: none;
+        padding: 12px;
+        cursor: pointer;
+        color: #95A5A6;
+        transition: color 0.3s;
+    }
+
+    .toggle-password:hover {
+        color: var(--primary);
+    }
+
+    .btn-login {
+        width: 100%;
+        padding: 14px;
+        background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
+        color: var(--white);
+        border: none;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-login:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
+    }
+
+    .btn-login:active {
+        transform: translateY(0);
+    }
+
+    .btn-login .btn-text {
+        transition: opacity 0.3s;
+    }
+
+    .btn-login .spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-top-color: var(--white);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto;
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    .btn-login.loading .btn-text {
+        display: none;
+    }
+
+    .btn-login.loading .spinner {
+        display: block;
+    }
+
+    .alert {
+        padding: 12px 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+
+    .alert-danger {
+        background: #FEE2E2;
+        color: #DC2626;
+        border: 1px solid #FECACA;
+    }
+
+    .alert-success {
+        background: #D1FAE5;
+        color: #065F46;
+        border: 1px solid #A7F3D0;
+    }
+
+    .login-footer {
+        padding: 15px 20px;
+        text-align: center;
+        background: #F8F9FA;
+        font-size: 0.8rem;
+        color: var(--text-light);
+    }
+
+    .login-footer p {
+        margin: 0;
+    }
+
+    .help-text {
+        text-align: center;
+        margin-top: 15px;
+        font-size: 0.85rem;
+        color: var(--text-light);
+    }
+
+    .help-text i {
+        color: var(--primary);
+        margin-right: 5px;
+    }
+
+    /* Tablet and Mobile Responsive */
+    @media (max-width: 480px) {
+        .login-container {
+            border-radius: 15px;
+        }
+
+        .login-header {
+            padding: 25px 15px;
+        }
+
+        .login-logo {
+            width: 70px;
+            height: 70px;
+        }
+
+        .login-header h2 {
+            font-size: 1.3rem;
+        }
+
+        .login-header p {
+            font-size: 0.8rem;
+        }
+
+        .login-body {
+            padding: 20px 15px;
+        }
+
+        .form-control {
+            font-size: 0.9rem;
+        }
+
+        .btn-login {
+            padding: 12px;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Very small screens */
+    @media (max-width: 320px) {
+        .login-logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        .login-header h2 {
+            font-size: 1.1rem;
+        }
+
+        .login-body {
+            padding: 15px 10px;
+        }
+    }
+</style>
 {% endblock %}
 
 {% block content %}
-<div class="auth-container">
-    <div class="auth-card">
-        <div class="auth-header">
-            <div class="logo">
-                <i class="fas fa-graduation-cap"></i>
-            </div>
-            <h2>Kampala International University</h2>
-            <p>Student Result Management System</p>
+<div class="login-container">
+    <!-- Header with Logo -->
+    <div class="login-header">
+        <div class="login-logo">
+            <img src="{% static 'images/logo.jpg' %}" alt="KIU Logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22100%22 height=%22100%22%3E%3Crect width=%22100%22 height=%22100%22 fill=%22%2327AE60%22/%3E%3Ctext x=%2250%22 y=%2250%22 text-anchor=%22middle%22 dominant-baseline=%22middle%22 font-size=%2240%22 fill=%22white%22 font-family=%22Arial%22%3EKIU%3C/text%3E%3C/svg%3E'">
         </div>
-        
-        <div class="auth-body">
-            <h4 class="text-center mb-4">Student Login</h4>
-            
-            {% if form.errors %}
-            <div class="alert alert-danger" role="alert">
-                <i class="fas fa-exclamation-circle me-2"></i>
-                Invalid registration number or password. Please try again.
+        <h2>KIU Student Portal</h2>
+        <p>Result Management System</p>
+    </div>
+
+    <!-- Login Form -->
+    <div class="login-body">
+        {% if form.errors %}
+        <div class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i>
+            Invalid registration number or password
+        </div>
+        {% endif %}
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                <i class="fas fa-info-circle"></i>
+                {{ message }}
             </div>
-            {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" id="loginForm">
+            {% csrf_token %}
             
-            <form method="post" class="login-form">
-                {% csrf_token %}
-                
-                <div class="form-group mb-4">
-                    <label for="{{ form.username.id_for_label }}" class="form-label">
-                        <i class="fas fa-id-card me-2"></i>Registration Number
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-id-card"></i></span>
-                        {{ form.username }}
-                    </div>
-                    {% if form.username.errors %}
-                    <div class="text-danger mt-1">
-                        {{ form.username.errors }}
-                    </div>
-                    {% endif %}
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-id-card"></i> Registration Number
+                </label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <i class="fas fa-user"></i>
+                    </span>
+                    {{ form.username }}
                 </div>
-                
-                <div class="form-group mb-4">
-                    <label for="{{ form.password.id_for_label }}" class="form-label">
-                        <i class="fas fa-lock me-2"></i>Password
-                    </label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        {{ form.password }}
-                        <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    {% if form.password.errors %}
-                    <div class="text-danger mt-1">
-                        {{ form.password.errors }}
-                    </div>
-                    {% endif %}
-                </div>
-                
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-lg">
-                        <i class="fas fa-sign-in-alt me-2"></i>Login
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">
+                    <i class="fas fa-lock"></i> Password
+                </label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    {{ form.password }}
+                    <button type="button" class="toggle-password" id="togglePassword" aria-label="Toggle password visibility">
+                        <i class="fas fa-eye"></i>
                     </button>
                 </div>
-            </form>
-            
-            <div class="text-center mt-4">
-                <p class="text-muted">
-                    <i class="fas fa-info-circle me-1"></i>
-                    Forgot password? Contact the administrator
-                </p>
             </div>
-        </div>
-        
-        <div class="auth-footer">
-            <p>© 2024 Kampala International University</p>
+
+            <button type="submit" class="btn-login" id="loginButton">
+                <span class="btn-text">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </span>
+                <span class="spinner"></span>
+            </button>
+        </form>
+
+        <div class="help-text">
+            <i class="fas fa-info-circle"></i>
+            Forgot password? Contact administrator
         </div>
     </div>
+
+    <!-- Footer -->
+    <div class="login-footer">
+        <p>© 2024 Kampala International University</p>
+    </div>
 </div>
-
-<style>
-.auth-container {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
-    padding: 20px;
-}
-
-.auth-card {
-    width: 100%;
-    max-width: 450px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
-.auth-header {
-    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
-    color: white;
-    padding: 40px 30px;
-    text-align: center;
-}
-
-.logo {
-    width: 80px;
-    height: 80px;
-    background: white;
-    border-radius: 50%;
-    margin: 0 auto 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.logo i {
-    font-size: 40px;
-    color: #27AE60;
-}
-
-.auth-header h2 {
-    color: white;
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.auth-header p {
-    color: rgba(255, 255, 255, 0.9);
-    margin: 0;
-}
-
-.auth-body {
-    padding: 40px 30px;
-}
-
-.form-control {
-    height: 50px;
-    border-radius: 12px;
-    border: 1px solid #E9ECEF;
-}
-
-.form-control:focus {
-    border-color: #27AE60;
-    box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
-}
-
-.input-group-text {
-    background: white;
-    border: 1px solid #E9ECEF;
-    border-right: none;
-    color: #6C757D;
-}
-
-.input-group .form-control {
-    border-left: none;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #27AE60 0%, #2BAB61 100%);
-    border: none;
-    height: 50px;
-    border-radius: 12px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(39, 174, 96, 0.3);
-}
-
-.auth-footer {
-    background: #F8F9FA;
-    padding: 20px;
-    text-align: center;
-}
-
-.auth-footer p {
-    margin: 0;
-    color: #6C757D;
-}
-</style>
+{% endblock %}
 
 {% block extra_js %}
 <script>
-document.getElementById('togglePassword').addEventListener('click', function() {
-    const passwordInput = document.getElementById('{{ form.password.id_for_label }}');
-    const icon = this.querySelector('i');
+document.addEventListener('DOMContentLoaded', function() {
+    // Toggle Password Visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.querySelector('input[type="password"]');
     
-    if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        icon.classList.remove('fa-eye');
-        icon.classList.add('fa-eye-slash');
-    } else {
-        passwordInput.type = 'password';
-        icon.classList.remove('fa-eye-slash');
-        icon.classList.add('fa-eye');
+    if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+            const type = passwordInput.type === 'password' ? 'text' : 'password';
+            passwordInput.type = type;
+            
+            // Change icon
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
     }
+
+    // Form Loading State
+    const loginForm = document.getElementById('loginForm');
+    const loginButton = document.getElementById('loginButton');
+    
+    if (loginForm && loginButton) {
+        loginForm.addEventListener('submit', function(e) {
+            const username = document.querySelector('input[name="username"]');
+            const password = document.querySelector('input[name="password"]');
+            
+            if (username && password && username.value && password.value) {
+                loginButton.classList.add('loading');
+                loginButton.disabled = true;
+            }
+        });
+    }
+
+    // Auto-focus first input
+    const firstInput = document.querySelector('input[type="text"], input[type="password"]');
+    if (firstInput) {
+        firstInput.focus();
+    }
+
+    // Remove error alert after 5 seconds
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.style.transition = 'opacity 0.5s';
+            alert.style.opacity = '0';
+            setTimeout(() => alert.remove(), 500);
+        }, 5000);
+    });
 });
 </script>
-{% endblock %}
 {% endblock %}
