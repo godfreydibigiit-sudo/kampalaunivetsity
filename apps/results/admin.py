@@ -4,7 +4,6 @@ Admin configuration for results app
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from .models import Result, GPAReport
-from .utils import GPACalculator
 
 
 @admin.register(Result)
@@ -45,7 +44,7 @@ class ResultAdmin(admin.ModelAdmin):
         }),
         ('Module Scores', {
             'fields': ('coursework_score', 'final_exam_score'),
-            'description': 'Enter coursework (out of 30) and final exam (out of 70) scores'
+            'description': '📝 Coursework: out of 40 marks (40%) | 📝 Final Exam: out of 60 marks (60%)'
         }),
         ('Calculated Results', {
             'fields': ('total_score', 'grade', 'grade_point', 'remark'),
@@ -62,7 +61,6 @@ class ResultAdmin(admin.ModelAdmin):
         """Set uploaded_by and auto-publish"""
         if not obj.uploaded_by:
             obj.uploaded_by = request.user
-        # Auto-publish results
         obj.is_published = True
         super().save_model(request, obj, form, change)
     

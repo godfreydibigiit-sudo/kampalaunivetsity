@@ -5,216 +5,485 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Results - KIU</title>
     <style>
-        @page {
-            size: A4;
-            margin: 2cm;
+        /* ===== RESET ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
             font-family: 'Helvetica', 'Arial', sans-serif;
             color: #333;
             line-height: 1.6;
+            padding: 20px;
+            background: #f4f7f6;
         }
-        
+
+        /* ===== PAGE CONTAINER ===== */
+        .page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* ===== HEADER ===== */
         .header {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border-bottom: 3px solid #27AE60;
             padding-bottom: 20px;
         }
-        
+
         .university-name {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: #27AE60;
             margin-bottom: 5px;
+            letter-spacing: 0.5px;
         }
-        
+
         .university-address {
-            font-size: 14px;
+            font-size: 13px;
             color: #666;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
-        
+
         .document-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #333;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
-        
+
+        /* ===== STUDENT INFO ===== */
         .student-info {
-            margin-bottom: 30px;
-            padding: 20px;
-            background-color: #F8F9FA;
-            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: #F8F9FA;
+            border-radius: 8px;
+            border-left: 4px solid #27AE60;
         }
-        
+
         .student-info table {
             width: 100%;
             border-collapse: collapse;
         }
-        
+
         .student-info td {
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-        
-        .student-info td:first-child {
-            font-weight: bold;
-            width: 200px;
-        }
-        
-        .results-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-        
-        .results-table th {
-            background-color: #27AE60;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-size: 14px;
-        }
-        
-        .results-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ddd;
+            padding: 6px 8px;
             font-size: 13px;
+            vertical-align: top;
         }
-        
-        .results-table tr:nth-child(even) {
-            background-color: #F8F9FA;
+
+        .student-info td.label {
+            font-weight: bold;
+            color: #27AE60;
+            width: 130px;
         }
-        
+
+        /* ===== GPA SUMMARY ===== */
         .gpa-summary {
             text-align: center;
             padding: 20px;
-            background-color: #E6F5EF;
-            border-radius: 5px;
-            margin-bottom: 30px;
+            background: linear-gradient(135deg, #E6F5EF 0%, #D1FAE5 100%);
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
-        
+
         .gpa-value {
-            font-size: 36px;
+            font-size: 34px;
             font-weight: bold;
             color: #27AE60;
+            line-height: 1;
         }
-        
+
         .gpa-label {
-            font-size: 16px;
+            font-size: 14px;
             color: #333;
-            margin-top: 5px;
+            margin-top: 6px;
+            font-weight: 600;
         }
-        
-        .footer {
-            text-align: center;
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid #ddd;
+
+        /* ===== RESULTS TABLE ===== */
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .results-table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+        }
+
+        .results-table th {
+            background: #27AE60;
+            color: white;
+            padding: 12px 10px;
+            text-align: left;
             font-size: 12px;
-            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
         }
-        
+
+        .results-table td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .results-table tr:nth-child(even) {
+            background: #F8F9FA;
+        }
+
+        .results-table tr:hover {
+            background: #E6F5EF;
+        }
+
+        /* ===== SIGNATURES ===== */
         .signature-section {
-            margin-top: 50px;
+            margin-top: 40px;
             display: flex;
             justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
         }
-        
+
         .signature {
             text-align: center;
             font-size: 12px;
+            flex: 1;
+            min-width: 200px;
         }
-        
+
         .signature-line {
-            width: 200px;
+            width: 100%;
+            max-width: 200px;
             border-top: 1px solid #333;
             margin: 40px auto 10px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .footer p {
+            margin-bottom: 4px;
+        }
+
+        /* ===== PRINT BUTTON (only shows on screen) ===== */
+        .print-btn {
+            display: block;
+            width: 100%;
+            max-width: 260px;
+            margin: 20px auto;
+            padding: 14px 20px;
+            background: #27AE60;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+        }
+
+        .print-btn:hover {
+            background: #1E8449;
+        }
+
+        /* ============================================
+           📱 RESPONSIVE - MOBILE
+           ============================================ */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .page {
+                padding: 18px;
+                border-radius: 8px;
+            }
+
+            .university-name {
+                font-size: 16px;
+            }
+
+            .university-address {
+                font-size: 11px;
+            }
+
+            .document-title {
+                font-size: 13px;
+                letter-spacing: 1px;
+            }
+
+            .student-info {
+                padding: 12px;
+            }
+
+            /* Stack student info */
+            .student-info table,
+            .student-info tbody,
+            .student-info tr,
+            .student-info td {
+                display: block;
+                width: 100%;
+            }
+
+            .student-info tr {
+                margin-bottom: 8px;
+                padding-bottom: 8px;
+                border-bottom: 1px dashed #ddd;
+            }
+
+            .student-info tr:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+                padding-bottom: 0;
+            }
+
+            .student-info td {
+                padding: 3px 0;
+            }
+
+            .student-info td.label {
+                width: auto;
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .gpa-value {
+                font-size: 28px;
+            }
+
+            .gpa-label {
+                font-size: 12px;
+            }
+
+            .results-table th {
+                padding: 10px 8px;
+                font-size: 10px;
+            }
+
+            .results-table td {
+                padding: 10px 8px;
+                font-size: 12px;
+            }
+
+            .signature-section {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .signature {
+                min-width: 100%;
+            }
+
+            .signature-line {
+                margin: 30px auto 8px;
+            }
+
+            .footer {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page {
+                padding: 15px;
+            }
+
+            .university-name {
+                font-size: 14px;
+            }
+
+            .document-title {
+                font-size: 12px;
+            }
+
+            .gpa-value {
+                font-size: 24px;
+            }
+
+            .results-table th {
+                font-size: 9px;
+                padding: 8px 6px;
+            }
+
+            .results-table td {
+                font-size: 11px;
+                padding: 8px 6px;
+            }
+        }
+
+        /* ============================================
+           🖨️ PRINT STYLES (for PDF generation)
+           ============================================ */
+        @page {
+            size: A4;
+            margin: 1.5cm;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                background: white;
+            }
+
+            .page {
+                max-width: 100%;
+                padding: 0;
+                box-shadow: none;
+                border-radius: 0;
+            }
+
+            .print-btn {
+                display: none;
+            }
+
+            .table-wrapper {
+                overflow: visible;
+            }
+
+            .results-table {
+                min-width: auto;
+            }
+
+            .results-table tr:hover {
+                background: transparent;
+            }
+
+            .results-table tr:nth-child(even) {
+                background: #F8F9FA;
+            }
+
+            .signature-section {
+                flex-direction: row;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="university-name">KAMPALA INTERNATIONAL UNIVERSITY</div>
-        <div class="university-address">Kampala, Uganda</div>
-        <div class="document-title">Academic Results</div>
-    </div>
-    
-    <div class="student-info">
-        <table>
-            <tr>
-                <td>Student Name:</td>
-                <td>{{ student.get_full_name }}</td>
-                <td>Registration Number:</td>
-                <td>{{ student.user.registration_number }}</td>
-            </tr>
-            <tr>
-                <td>Department:</td>
-                <td>{{ student.department.name }}</td>
-                <td>Year of Study:</td>
-                <td>{{ student.get_year_of_study_display }}</td>
-            </tr>
-            <tr>
-                <td>Semester:</td>
-                <td>{{ results_data.semester.name }}</td>
-                <td>Academic Year:</td>
-                <td>{{ results_data.semester.academic_year }}</td>
-            </tr>
-        </table>
-    </div>
-    
-    <div class="gpa-summary">
-        <div class="gpa-value">{{ results_data.gpa|floatformat:2 }}</div>
-        <div class="gpa-label">Semester GPA</div>
-    </div>
-    
-    <table class="results-table">
-        <thead>
-            <tr>
-                <th>Course Code</th>
-                <th>Course Title</th>
-                <th>Credit Units</th>
-                <th>Coursework</th>
-                <th>Exam</th>
-                <th>Total</th>
-                <th>Grade</th>
-                <th>Points</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for result in results_data.results %}
-            <tr>
-                <td>{{ result.course.code }}</td>
-                <td>{{ result.course.title }}</td>
-                <td>{{ result.course.credit_units }}</td>
-                <td>{{ result.coursework_score }}</td>
-                <td>{{ result.final_exam_score }}</td>
-                <td>{{ result.total_score }}</td>
-                <td>{{ result.grade }}</td>
-                <td>{{ result.grade_point }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
-    <div class="signature-section">
-        <div class="signature">
-            <div class="signature-line"></div>
-            Registrar's Signature
+
+    <!-- Print Button (Hidden when printing) -->
+    <button class="print-btn" onclick="window.print()">
+        🖨️ Print / Save as PDF
+    </button>
+
+    <div class="page">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="university-name">KAMPALA INTERNATIONAL UNIVERSITY</div>
+            <div class="university-address">Kampala, Uganda</div>
+            <div class="document-title">Academic Results</div>
         </div>
-        <div class="signature">
-            <div class="signature-line"></div>
-            Dean's Signature
+
+        <!-- Student Info -->
+        <div class="student-info">
+            <table>
+                <tr>
+                    <td class="label">Student Name:</td>
+                    <td>{{ student.get_full_name }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Registration No:</td>
+                    <td>{{ student.user.registration_number }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Department:</td>
+                    <td>{{ student.department.name }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Year of Study:</td>
+                    <td>{{ student.get_year_of_study_display }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Semester:</td>
+                    <td>{{ results_data.semester.name }}</td>
+                </tr>
+                <tr>
+                    <td class="label">Academic Year:</td>
+                    <td>{{ results_data.semester.academic_year }}</td>
+                </tr>
+            </table>
         </div>
+
+        <!-- GPA Summary -->
+        <div class="gpa-summary">
+            <div class="gpa-value">{{ results_data.gpa|floatformat:2 }}</div>
+            <div class="gpa-label">Semester GPA</div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="table-wrapper">
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Course Title</th>
+                        <th>Credits</th>
+                        <th>Coursework (40%)</th>
+                        <th>Exam (60%)</th>
+                        <th>Total</th>
+                        <th>Grade</th>
+                        <th>Points</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for result in results_data.results %}
+                    <tr>
+                        <td><strong>{{ result.course.code }}</strong></td>
+                        <td>{{ result.course.title }}</td>
+                        <td>{{ result.course.credit_units }}</td>
+                        <td>{{ result.coursework_score|floatformat:1 }}/40</td>
+                        <td>{{ result.final_exam_score|floatformat:1 }}/60</td>
+                        <td><strong>{{ result.total_score|floatformat:1 }}/100</strong></td>
+                        <td><strong>{{ result.grade }}</strong></td>
+                        <td>{{ result.grade_point }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Signatures -->
+        <div class="signature-section">
+            <div class="signature">
+                <div class="signature-line"></div>
+                Registrar's Signature
+            </div>
+            <div class="signature">
+                <div class="signature-line"></div>
+                Dean's Signature
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This is an official document from Kampala International University.</p>
+            <p>Verify authenticity at: www.kiu.ac.ug/verify</p>
+        </div>
+
     </div>
-    
-    <div class="footer">
-        <p>This is an official document from Kampala International University.</p>
-        <p>Verify authenticity at: www.kiu.ac.ug/verify</p>
-    </div>
+
 </body>
 </html>

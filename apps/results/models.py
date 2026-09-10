@@ -17,16 +17,24 @@ class Result(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='results')
     semester = models.ForeignKey(Semester, on_delete=models.CASCADE, related_name='results')
     
-    # Scores
+    # Scores - UPDATED: Coursework 40, Exam 60
     coursework_score = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, blank=True,
-        validators=[MinValueValidator(0), MaxValueValidator(30)],
-        help_text='Coursework score (out of 30)'
+        _('Coursework Score'),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(40)],
+        help_text='Coursework score (out of 40)'
     )
     final_exam_score = models.DecimalField(
-        max_digits=5, decimal_places=2, null=True, blank=True,
-        validators=[MinValueValidator(0), MaxValueValidator(70)],
-        help_text='Final exam score (out of 70)'
+        _('Final Exam Score'),
+        max_digits=5,
+        decimal_places=2,
+        null=True,
+        blank=True,
+        validators=[MinValueValidator(0), MaxValueValidator(60)],
+        help_text='Final exam score (out of 60)'
     )
     
     # Calculated fields
@@ -37,7 +45,7 @@ class Result(models.Model):
     
     # Metadata
     is_published = models.BooleanField(
-        default=True,  # CHANGE: Set default to True so results show immediately
+        default=True,
         help_text='Mark to publish result for student viewing.'
     )
     uploaded_by = models.ForeignKey(
@@ -60,7 +68,7 @@ class Result(models.Model):
     
     def save(self, *args, **kwargs):
         """Auto-calculate total score, grade, and grade point"""
-        # Calculate total score
+        # Calculate total score (Coursework 40 + Exam 60 = 100)
         if self.coursework_score is not None and self.final_exam_score is not None:
             self.total_score = self.coursework_score + self.final_exam_score
         elif self.total_score is None:
@@ -74,6 +82,20 @@ class Result(models.Model):
             self.remark = grade_info['remark']
         
         super().save(*args, **kwargs)
+    
+    @property
+    def coursework_percentage(self):
+        """Get coursework as percentage"""
+        if self.coursework_score:
+            return (float(self.coursework_score) / 40) * 100
+        return 0
+    
+    @property
+    def exam_percentage(self):
+        """Get exam as percentage"""
+        if self.final_exam_score:
+            return (float(self.final_exam_score) / 60) * 100
+        return 0
 
 
 class GPAReport(models.Model):
