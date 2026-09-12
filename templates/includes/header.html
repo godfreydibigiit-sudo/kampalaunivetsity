@@ -36,9 +36,9 @@
     </div>
     
     <div class="sidebar-footer">
-        <form method="post" action="{% url 'accounts:logout' %}">
+        <form method="post" action="{% url 'accounts:logout' %}" class="logout-form">
             {% csrf_token %}
-            <button type="submit" class="nav-link logout-btn" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
+            <button type="submit" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </button>
@@ -47,6 +47,134 @@
 </nav>
 
 <style>
+/* Sidebar base */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    background: #1e293b;
+    color: #e2e8f0;
+    z-index: 1000;
+    overflow-y: auto;
+    transition: transform 0.3s ease;
+}
+
+.sidebar-header {
+    padding: 1.25rem 1rem;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    flex-shrink: 0;
+}
+
+.sidebar-logo {
+    font-size: 1.75rem;
+    color: #38bdf8;
+    margin-bottom: 0.5rem;
+}
+
+.sidebar-title {
+    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.sidebar-subtitle {
+    font-size: 0.75rem;
+    margin: 0;
+    opacity: 0.7;
+}
+
+/* Nav area takes remaining space */
+.sidebar-nav {
+    flex: 1 1 auto;
+    padding: 1rem 0;
+    overflow-y: auto;
+}
+
+.sidebar-nav .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1.25rem;
+    color: #cbd5e1;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    font-size: 0.95rem;
+}
+
+.sidebar-nav .nav-link i {
+    width: 20px;
+    text-align: center;
+}
+
+.sidebar-nav .nav-link:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+}
+
+.sidebar-nav .nav-link.active {
+    background: rgba(56, 189, 248, 0.15);
+    color: #38bdf8;
+    border-left: 3px solid #38bdf8;
+}
+
+/* Footer - logout section */
+.sidebar-footer {
+    flex-shrink: 0;
+    padding: 0.75rem 1rem 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    background: #1e293b;
+    position: sticky;
+    bottom: 0;
+}
+
+.logout-form {
+    margin: 0;
+    width: 100%;
+}
+
+/* Logout button - red and clearly visible */
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+}
+
+.logout-btn i,
+.logout-btn span {
+    color: #ffffff;
+}
+
+.logout-btn:hover {
+    background: #bb2d3b;
+}
+
+.logout-btn:active {
+    transform: scale(0.98);
+}
+
+.logout-btn:focus {
+    outline: 2px solid #f87171;
+    outline-offset: 2px;
+}
+
+/* Overlay */
 .sidebar-overlay {
     display: none;
     position: fixed;
@@ -62,27 +190,55 @@
     display: block;
 }
 
-/* Logout button red color - only affects the logout button */
-.logout-btn,
-.logout-btn i,
-.logout-btn span {
-    color: #dc3545 !important;
-}
-
-.logout-btn:hover,
-.logout-btn:hover i,
-.logout-btn:hover span {
-    color: #bb2d3b !important;
-}
-
+/* Mobile responsiveness */
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
+        width: 260px;
+        max-width: 80vw;
+        box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
     }
-    
+
     .sidebar.active {
         transform: translateX(0);
+    }
+
+    .sidebar-header {
+        padding: 1rem 0.75rem;
+    }
+
+    .sidebar-logo {
+        font-size: 1.5rem;
+    }
+
+    .sidebar-title {
+        font-size: 1rem;
+    }
+
+    .sidebar-nav .nav-link {
+        padding: 0.85rem 1rem;
+        font-size: 0.95rem;
+    }
+
+    .sidebar-footer {
+        padding: 0.75rem 0.75rem 1.25rem;
+    }
+
+    .logout-btn {
+        padding: 0.85rem 1rem;
+        font-size: 1rem;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+    .sidebar {
+        width: 85vw;
+    }
+
+    .logout-btn {
+        padding: 0.75rem 0.75rem;
+        font-size: 0.9rem;
     }
 }
 </style>
