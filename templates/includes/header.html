@@ -38,7 +38,7 @@
     <div class="sidebar-footer">
         <form method="post" action="{% url 'accounts:logout' %}">
             {% csrf_token %}
-            <button type="submit" class="nav-link" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
+            <button type="submit" class="nav-link logout-btn" style="background: none; border: none; width: 100%; text-align: left; cursor: pointer;">
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Logout</span>
             </button>
@@ -60,6 +60,19 @@
 
 .sidebar-overlay.active {
     display: block;
+}
+
+/* Logout button red color - only affects the logout button */
+.logout-btn,
+.logout-btn i,
+.logout-btn span {
+    color: #dc3545 !important;
+}
+
+.logout-btn:hover,
+.logout-btn:hover i,
+.logout-btn:hover span {
+    color: #bb2d3b !important;
 }
 
 @media (max-width: 768px) {
